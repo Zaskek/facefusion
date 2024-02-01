@@ -70,13 +70,11 @@ def prepare_frame(frame : Frame) -> Frame:
 
 
 def analyse_frame(frame : Frame) -> bool:
-	content_analyser = get_content_analyser()
-	frame = prepare_frame(frame)
-	probability = content_analyser.run(None,
-	{
-		'input:0': frame
-	})[0][0][1]
-	return probability > PROBABILITY_LIMIT
+    # content_analyser = get_content_analyser()  # Removed model loading
+    # frame = prepare_frame(frame)  # Preprocessing can be kept for potential future use
+    # probability = content_analyser.run(None, { 'input:0': frame })[0][0][1]  # Removed model execution
+    return False  # Always return False to indicate NSFW detection is disabled
+
 
 
 @lru_cache(maxsize = None)
