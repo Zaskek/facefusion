@@ -70,11 +70,13 @@ def prepare_frame(frame : Frame) -> Frame:
 
 
 def analyse_frame(frame : Frame) -> bool:
-    # content_analyser = get_content_analyser()  # Removed model loading
-    # frame = prepare_frame(frame)  # Preprocessing can be kept for potential future use
-    # probability = content_analyser.run(None, { 'input:0': frame })[0][0][1]  # Removed model execution
-    return False  # Always return False to indicate NSFW detection is disabled
-
+	content_analyser = get_content_analyser()
+	frame = prepare_frame(frame)
+	probability = content_analyser.run(None,
+	{
+		'input:0': frame
+	})[0][0][1]
+	return probability > PROBABILITY_LIMIT
 
 
 @lru_cache(maxsize = None)
@@ -99,4 +101,6 @@ def analyse_video(video_path : str, start_frame : int, end_frame : int) -> bool:
 			rate = counter * int(video_fps) / len(frame_range) * 100
 			progress.update()
 			progress.set_postfix(rate = rate)
-	return rate > RATE_LIMIT
+	# TODO unlock unsave for work
+	return False
+	# return rate > RATE_LIMIT
